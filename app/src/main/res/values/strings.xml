@@ -11,4 +11,30 @@
     <string name="retry">Retry</string>
     <string name="unexpected_error_occurred">Unexpected error occurred</string>
     <string name="your_session_is_expired">Your session is expired. Please log in.</string>
+    <string name="signup_email_hint">E-mail</string>
+    <string name="signup_username_hint">Username</string>
+    <string name="signup_password_hint">Password</string>
+    <string name="signup_button_text">Sign up</string>
+    <string name="signup_already_have_account_button_text">ALREADY HAVE AN ACCOUNT?</string>
+    <string name="signup_email_is_required_error">Email is required.</string>
+    <string name="signup_email_is_invalid_error">Email is invalid.</string>
+    <string name="signup_email_too_short_error">Email must be longer than 5 characters</string>
+    <string name="signup_email_too_long_error">Email must be shorter than 50 characters</string>
+    <string name="signup_username_is_required_error">Username is required.</string>
+    <string name="signup_username_must_not_consist_characters_error">
+        Username can only include a–z, 0–9 and _ characters.
+    </string>
+    <string name="signup_username_is_too_short_error">Username must be longer than 2 characters</string>
+    <string name="signup_username_is_too_long_error">Username must be shorter than 20 characters</string>
+    <string name="signup_password_is_required_error">Password is required.</string>
+    <string name="signup_password_is_too_short_error">Password must be longer than 7 characters</string>
+    <string name="signup_password_is_too_long_error">Password must be shorter than 40 characters</string>
+    <string name="signup_password_must_contain_characters_error">
+        Password must contain one digit, one uppercase letter,
+        one lowercase letter and one special character.
+    </string>
+    <string name="product_detail_related_product">Related Product</string>
+    <string name="product_detail_related_product_image_description">related product image</string>
+    <string name="signup_top_bar_title">Sign up</string>
+    <string name="product_list_menu_log_out">Log out</string>
 </resources>

@@ -1,4 +1,4 @@
-package school.cactus.succulentshop.login
+package school.cactus.succulentshop.signup
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,31 +9,28 @@ import androidx.navigation.fragment.findNavController
 import school.cactus.succulentshop.R
 import school.cactus.succulentshop.auth.AuthRepository
 import school.cactus.succulentshop.auth.JwtStore
-import school.cactus.succulentshop.databinding.FragmentLoginBinding
+import school.cactus.succulentshop.databinding.FragmentSignupBinding
 import school.cactus.succulentshop.hideKeyboard
 import school.cactus.succulentshop.infra.BaseFragment
 
-class LoginFragment : BaseFragment() {
-    private var _binding: FragmentLoginBinding? = null
-
-    private val binding get() = _binding!!
-
-    override val viewModel: LoginViewModel by viewModels {
-        LoginViewModelFactory(
+class SignupFragment : BaseFragment() {
+    private var _binding: FragmentSignupBinding? = null
+    val binding get() = _binding!!
+    override val viewModel: SignupViewModel by viewModels {
+        SignupViewModelFactory(
             store = JwtStore(requireContext()),
             repository = AuthRepository()
         )
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         if (!JwtStore(requireContext()).loadJwt().isNullOrEmpty()) {
             findNavController().navigate(R.id.loginSuccessful)
         }
-        _binding = FragmentLoginBinding.inflate(inflater, container, false)
+        _binding = FragmentSignupBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
         return binding.root
@@ -42,7 +39,7 @@ class LoginFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        requireActivity().title = getString(R.string.log_in)
+        requireActivity().title = getString(R.string.signup_top_bar_title)
 
         viewModel.showKeyboardState.observe(viewLifecycleOwner) {
             if (!it) {

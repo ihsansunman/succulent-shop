@@ -6,9 +6,8 @@ import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.textfield.TextInputLayout
+import school.cactus.succulentshop.infra.BaseAdapter
 import school.cactus.succulentshop.product.ProductItem
-import school.cactus.succulentshop.product.list.ProductAdapter
-import school.cactus.succulentshop.product.list.ProductDecoration
 
 @BindingAdapter("app:error")
 fun TextInputLayout.error(@StringRes errorMessage: Int?) {
@@ -16,20 +15,22 @@ fun TextInputLayout.error(@StringRes errorMessage: Int?) {
     isErrorEnabled = errorMessage != null
 }
 
-val productAdapter = ProductAdapter()
-
-@BindingAdapter("app:products", "app:itemClickListener")
-fun RecyclerView.products(products: List<ProductItem>?, itemClickListener: (ProductItem) -> Unit) {
+@BindingAdapter("app:adapter", "app:products", "app:itemClickListener", "app:decoration")
+fun RecyclerView.setProductData(
+    productAdapter: BaseAdapter<ProductItem>,
+    products: List<ProductItem>?,
+    itemClickListener: (ProductItem) -> Unit,
+    itemDecoration: RecyclerView.ItemDecoration
+) {
     if (adapter != productAdapter) {
         adapter = productAdapter
     }
 
-    productAdapter.itemClickListener = itemClickListener
-
     if (itemDecorationCount == 0) {
-        addItemDecoration(ProductDecoration())
+        addItemDecoration(itemDecoration)
     }
 
+    productAdapter.itemClickListener = itemClickListener
     productAdapter.submitList(products.orEmpty())
 }
 
@@ -38,6 +39,7 @@ fun ImageView.imageUrl(imageUrl: String?) {
     imageUrl?.let {
         Glide.with(this)
             .load(it)
+            .override(512)
             .into(this)
     }
 }

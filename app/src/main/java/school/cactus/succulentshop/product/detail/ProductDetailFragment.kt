@@ -9,6 +9,7 @@ import androidx.navigation.fragment.navArgs
 import school.cactus.succulentshop.R
 import school.cactus.succulentshop.databinding.FragmentProductDetailBinding
 import school.cactus.succulentshop.infra.BaseFragment
+import school.cactus.succulentshop.product.ProductRepository
 
 class ProductDetailFragment : BaseFragment() {
     private var _binding: FragmentProductDetailBinding? = null
@@ -18,7 +19,7 @@ class ProductDetailFragment : BaseFragment() {
     private val args: ProductDetailFragmentArgs by navArgs()
 
     override val viewModel: ProductDetailViewModel by viewModels {
-        ProductDetailViewModelFactory(args.productId, ProductDetailRepository())
+        ProductDetailViewModelFactory(args.productId, ProductRepository())
     }
 
     override fun onCreateView(

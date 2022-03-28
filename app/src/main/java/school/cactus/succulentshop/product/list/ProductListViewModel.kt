@@ -11,12 +11,10 @@ import school.cactus.succulentshop.infra.BaseViewModel
 import school.cactus.succulentshop.infra.snackbar.SnackbarAction
 import school.cactus.succulentshop.infra.snackbar.SnackbarState
 import school.cactus.succulentshop.product.ProductItem
-import school.cactus.succulentshop.product.list.ProductListRepository.ProductListResult.Failure
-import school.cactus.succulentshop.product.list.ProductListRepository.ProductListResult.Success
-import school.cactus.succulentshop.product.list.ProductListRepository.ProductListResult.TokenExpired
-import school.cactus.succulentshop.product.list.ProductListRepository.ProductListResult.UnexpectedError
+import school.cactus.succulentshop.product.ProductRepository
+import school.cactus.succulentshop.product.Resource
 
-class ProductListViewModel(private val repository: ProductListRepository) : BaseViewModel() {
+class ProductListViewModel(private val repository: ProductRepository) : BaseViewModel() {
     private val _products = MutableLiveData<List<ProductItem>>()
 
     val products: LiveData<List<ProductItem>> = _products
@@ -26,23 +24,27 @@ class ProductListViewModel(private val repository: ProductListRepository) : Base
         navigation.navigate(action)
     }
 
+    val adapter = ProductAdapter()
+    val decoration = ProductDecoration()
+
     init {
         fetchProducts()
     }
 
     private fun fetchProducts() = viewModelScope.launch {
         repository.fetchProducts().collect {
-
             when (it) {
-                is Success -> onSuccess(it.products)
-                TokenExpired -> onTokenExpired()
-                UnexpectedError -> onUnexpectedError()
-                Failure -> onFailure()
+                is Resource.Success -> onSuccess(it.data!!)
+                is Resource.Error.TokenExpired -> onTokenExpired()
+                is Resource.Error.UnexpectedError -> onUnexpectedError()
+                is Resource.Error.Failure -> onFailure()
+                is Resource.Loading -> _isLoading.value = true
             }
         }
     }
 
     private fun onSuccess(products: List<ProductItem>) {
+        _isLoading.value = false
         _products.postValue(products)
     }
 
@@ -79,7 +81,7 @@ class ProductListViewModel(private val repository: ProductListRepository) : Base
         )
     }
 
-    private fun navigateToLogin() {
+    fun navigateToLogin() {
         val directions = ProductListFragmentDirections.tokenExpired()
         navigation.navigate(directions)
     }

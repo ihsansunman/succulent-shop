@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
             name="viewModel"
             type="school.cactus.succulentshop.product.detail.ProductDetailViewModel" />
+
+        <import type="android.view.View" />
     </data>
 
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:viewBindingIgnore="true">
+        android:layout_height="match_parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -23,6 +24,7 @@
                 android:id="@+id/imageView"
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
+                android:contentDescription="@string/product_detail_related_product_image_description"
                 android:scaleType="centerCrop"
                 app:imageUrl="@{viewModel.product.highResImageUrl}"
                 app:layout_constraintTop_toTopOf="parent"
@@ -74,6 +76,46 @@
                 app:layout_constraintStart_toStartOf="@id/startGuideline"
                 app:layout_constraintTop_toBottomOf="@id/priceText" />
 
+            <TextView
+                android:id="@+id/textViewRelatedProduct"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/product_detail_related_product"
+                android:textColor="@color/primaryText"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@id/startGuideline"
+                app:layout_constraintTop_toBottomOf="@id/addToCardButton" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="0dp"
+                android:layout_height="186dp"
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal"
+                app:adapter="@{viewModel.adapter}"
+                app:decoration="@{viewModel.decoration}"
+                app:itemClickListener="@{viewModel.itemClickListener}"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="@id/endGuideline"
+                app:layout_constraintStart_toStartOf="@id/startGuideline"
+                app:layout_constraintTop_toBottomOf="@id/textViewRelatedProduct"
+                app:products="@{viewModel.relatedProducts}"
+                app:reverseLayout="false"
+                tools:listitem="@layout/item_related_product" />
+
+            <com.google.android.material.progressindicator.CircularProgressIndicator
+                android:id="@+id/circularProgressIndicatorProductDetailImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                android:visibility="@{viewModel.isLoading ? View.VISIBLE:View.GONE}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/startGuideline"
                 android:layout_width="wrap_content"
@@ -87,7 +129,6 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 app:layout_constraintGuide_end="16dp" />
-
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </layout>
