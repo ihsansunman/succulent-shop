@@ -1,4 +1,4 @@
-package school.cactus.succulentshop.login
+package school.cactus.succulentshop.signup
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -6,10 +6,10 @@ import school.cactus.succulentshop.auth.AuthRepository
 import school.cactus.succulentshop.auth.JwtStore
 
 @Suppress("UNCHECKED_CAST")
-class LoginViewModelFactory(
+class SignupViewModelFactory(
     private val store: JwtStore,
     private val repository: AuthRepository
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T =
-        LoginViewModel(store, repository) as T
+        SignupViewModel(store, repository) as T
 }

@@ -1,4 +1,4 @@
-package school.cactus.succulentshop.product.list
+package school.cactus.succulentshop.product.detail
 
 import androidx.recyclerview.widget.DiffUtil
 import school.cactus.succulentshop.R
@@ -6,8 +6,7 @@ import school.cactus.succulentshop.infra.BaseAdapter
 import school.cactus.succulentshop.infra.BaseViewHolder
 import school.cactus.succulentshop.product.ProductItem
 
-class ProductAdapter : BaseAdapter<ProductItem>(DiffCallback()) {
-    override var itemClickListener: (ProductItem) -> Unit = {}
+class RelatedProductAdapter : BaseAdapter<ProductItem>(DiffCallback()) {
 
     class DiffCallback : DiffUtil.ItemCallback<ProductItem>() {
         override fun areItemsTheSame(oldItem: ProductItem, newItem: ProductItem) =
@@ -17,7 +16,7 @@ class ProductAdapter : BaseAdapter<ProductItem>(DiffCallback()) {
             oldItem == newItem
     }
 
-    override fun getItemViewType(position: Int) = R.layout.item_product
+    override fun getItemViewType(position: Int) = R.layout.item_related_product
 
     override fun onBindViewHolder(holder: BaseViewHolder<ProductItem>, position: Int) {
         super.onBindViewHolder(holder, position)

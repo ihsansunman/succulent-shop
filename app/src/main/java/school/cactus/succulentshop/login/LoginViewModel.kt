@@ -7,20 +7,18 @@ import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_LONG
 import com.google.android.material.snackbar.Snackbar.LENGTH_INDEFINITE
 import kotlinx.coroutines.launch
 import school.cactus.succulentshop.R
+import school.cactus.succulentshop.auth.AuthRepository
 import school.cactus.succulentshop.auth.JwtStore
+import school.cactus.succulentshop.auth.Resource
 import school.cactus.succulentshop.infra.BaseViewModel
 import school.cactus.succulentshop.infra.snackbar.SnackbarAction
 import school.cactus.succulentshop.infra.snackbar.SnackbarState
-import school.cactus.succulentshop.login.LoginRepository.LoginResult.ClientError
-import school.cactus.succulentshop.login.LoginRepository.LoginResult.Failure
-import school.cactus.succulentshop.login.LoginRepository.LoginResult.Success
-import school.cactus.succulentshop.login.LoginRepository.LoginResult.UnexpectedError
 import school.cactus.succulentshop.login.validation.IdentifierValidator
 import school.cactus.succulentshop.login.validation.PasswordValidator
 
 class LoginViewModel(
     private val store: JwtStore,
-    private val repository: LoginRepository
+    private val repository: AuthRepository
 ) : BaseViewModel() {
 
     private val identifierValidator = IdentifierValidator()
@@ -35,16 +33,19 @@ class LoginViewModel(
     val identifierErrorMessage: LiveData<Int> = _identifierErrorMessage
     val passwordErrorMessage: LiveData<Int> = _passwordErrorMessage
 
+    val showKeyboardState = MutableLiveData<Boolean>()
+
     fun onLoginButtonClick() = viewModelScope.launch {
+        showKeyboardState.value = false
         if (isIdentifierValid() and isPasswordValid()) {
             val result =
                 repository.sendLoginRequest(identifier.value.orEmpty(), password.value.orEmpty())
 
             when (result) {
-                is Success -> onSuccess(result.jwt)
-                is ClientError -> onClientError(result.errorMessage)
-                UnexpectedError -> onUnexpectedError()
-                Failure -> onFailure()
+                is Resource.Success -> onSuccess(result.data!!.jwt)
+                is Resource.Error.ClientError -> onClientError(result.message!!)
+                is Resource.Error.UnexpectedError -> onUnexpectedError()
+                is Resource.Error.Failure -> onFailure()
             }
         }
     }
@@ -91,5 +92,14 @@ class LoginViewModel(
     private fun isPasswordValid(): Boolean {
         _passwordErrorMessage.value = passwordValidator.validate(password.value.orEmpty())
         return _passwordErrorMessage.value == null
+    }
+
+    fun onCreateAccountButtonClick() {
+        navigateToSignupScreen()
+    }
+
+    private fun navigateToSignupScreen() {
+        val directions = LoginFragmentDirections.actionLoginFragmentToSignupFragment()
+        navigation.navigate(directions)
     }
 }
