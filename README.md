@@ -9,7 +9,7 @@ Design: [Figma](https://www.figma.com/file/aKFn9Czmk2ms2hqp4sctcw/Succulent-Shop
 
 ## Screenshots
 
-![Screenshot](https://raw.githubusercontent.com/ihsansunman/succulent-shop/master/src/images/screenshot.png)
+![Screenshot](https://raw.githubusercontent.com/ihsansunman/succulent-shop/master/images/screenshot.png)
 
 ## Run Locally
 
